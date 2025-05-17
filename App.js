@@ -21,7 +21,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App() {
   const [inputText, setInputText] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     getData()
   },[])
 
@@ -33,6 +33,7 @@ export default function App() {
   const [data, setData] = useState([]);
 
   const handlePress = async ()=> {
+    if (!inputText.trim()) return;
     try{
        const newItem = {
       id : Math.random(),
@@ -84,7 +85,7 @@ const getData = async () => {
           value = {inputText}
           autoCorrect={false}
         />
-        <TouchableOpacity style={styles.icon} onPress={handlePress}>
+        <TouchableOpacity style={[styles.icon, {backgroundColor : inputText.trim() ? "blue" : "#374151"}]} onPress={handlePress}>
           <Entypo name="plus" size={26} color="white" />
         </TouchableOpacity>
       </KeyboardAvoidingView>
@@ -103,14 +104,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     marginBottom: 10,
+    
   },
   input: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "",
     fontSize: 16,
     borderRadius: 10,
-    color: "#1F2937",
+    color: "#fff",
     padding: 10,
+    borderBottomWidth:0.9,
+    borderColor:"#374151"
   },
   icon: {
     backgroundColor: "blue",

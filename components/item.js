@@ -24,11 +24,11 @@ const Item = ({data}) => {
 
 const styles = StyleSheet.create({
 main : {
-    padding :10,
+    padding :15,
     marginHorizontal:10,
     backgroundColor:"#374151",
     marginBottom:15,
-    borderRadius:5,
+    borderRadius:10,
     width : "90%",
     alignSelf:"center",
     flexDirection:"row",
