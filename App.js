@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Keyboard,
+  Keyboard,Platform
 } from "react-native";
 //import { SafeAreaView } from 'react-native-safe-area-context';
 import Item from "./components/item";
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F2937",
+   
   },
   inputMain: {
     flexDirection: "row",

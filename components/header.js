@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, ViewComponent } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ViewComponent ,Platform} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Entypo from '@expo/vector-icons/Entypo';
@@ -26,7 +26,8 @@ container : {
     flexDirection:"row",
     justifyContent:"space-between",
     marginHorizontal:20,
-    marginVertical:10
+    marginVertical:10,
+    marginTop:Platform.OS == "android" ? 40 : 0
 },
 title:{
     fontSize : 24,

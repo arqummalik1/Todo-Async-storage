@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
       //  backgroundColor:"#374151",
         width:"90%",
         alignSelf:"center",
-        borderRadius:10,
+        borderRadius:20,
         flexDirection:"row"    ,
         marginBottom : 20,
-       // borderWidth:0.2,
+        borderBottomWidth:0.5,
         borderColor:"#374151"
     },
     input : {
@@ -36,8 +36,10 @@ const styles = StyleSheet.create({
         flex:1,
         fontSize : 16,
         color : "#fff",
+        
     },
     icon: {
-        marginRight:10
+        marginRight:10,
+        alignSelf:"center"
     }
 })
