@@ -4,19 +4,22 @@ import Checkbox from 'expo-checkbox'
 import Octicons from '@expo/vector-icons/Octicons';
 
 
-const Item = ({data}) => {
+const Item = ({data, delProp, update}) => {
    // console.log("daata ==>",data)
   return (
-    <View style={styles.main}>
+    <TouchableOpacity style={styles.main} onPress={()=> update(data.id)}>
         <Checkbox 
+        style={styles.checkbox}
         value = {data.isChecked}
         color ={data.isChecked ? "blue" : "#1F2937"}
+        onValueChange={()=>update(data.id)}
+        size={28}
         />
-      <Text style={[styles.title, data.isChecked && {textDecorationColor:"#1F2937",textDecorationLine : "line-through"}]}>{data.title}</Text>
-      <TouchableOpacity onPress={()=> alert("Deleted" + " " + data.id)}>
+      <Text style={[styles.title, data.isChecked && {textDecorationColor:"#fff",textDecorationLine : "line-through"}]}>{data.title}</Text>
+      <TouchableOpacity onPress= {()=>{delProp(data.id); alert("Deleted : "+  data.title)}}>
       <Octicons name="trash" size={20} color="#1F2937" style={styles.icon}/>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -43,6 +46,9 @@ title : {
 },
 icon : {
     //flex :1
+},
+checkbox:{
+  
 }
 
 

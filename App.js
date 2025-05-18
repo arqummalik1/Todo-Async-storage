@@ -25,11 +25,11 @@ export default function App() {
     getData()
   },[])
 
-  const todoData = [
+ /*  const todoData = [
     { id: 1, title: "Buy groceries", isChecked: false },
     { id: 2, title: "Read a book", isChecked: true },
     { id: 3, title: "Go for a walk", isChecked: false },
-  ];
+  ]; */
   const [data, setData] = useState([]);
 
   const handlePress = async ()=> {
@@ -40,10 +40,10 @@ export default function App() {
       title : inputText,
       isChecked: false
     };
-      setData((prevData)=> [...prevData,newItem])
+      setData((prevData)=> [...prevData, newItem])
       setInputText('')
       Keyboard.dismiss()
-      const jsonValue = JSON.stringify(data);
+      const jsonValue = JSON.stringify([...data,newItem]);
      await AsyncStorage.setItem('savedData', jsonValue);
     }
     catch(err){
@@ -63,19 +63,54 @@ const getData = async () => {
   }
 };
 
+const deleteItem = async (id) => {
+  try {
+   console.log("Id is ==>>",id)
+  const afterDelete = data.filter((item)=> item.id !== id)
+  await AsyncStorage.setItem("savedData",JSON.stringify(afterDelete));
+  setData(afterDelete)
+  }
+  catch(err){
+ console.log("error : ", err)
+  }
+ 
+}
+
+const updateChecked = async (id) => {
+  try {
+    const updatedData = data.map((item) => {
+       if (item.id == id) {
+        item.isChecked = !item.isChecked
+       }
+       return item;
+    })
+    await AsyncStorage.setItem("savedData", JSON.stringify(updatedData));
+    setData(updatedData)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <Header />
       <SearchBar />
       <FlatList
         data={data}
-        renderItem={({ item }) => <Item data={item} />}
+        renderItem={({ item }) => 
+        <Item data={item} 
+        delProp = {deleteItem} 
+        update = {updateChecked}
+        />}
         keyExtractor={(item) => item.id.toString()}
       />
       <KeyboardAvoidingView
         style={styles.inputMain}
         behavior="padding"
-        keyboardVerticalOffset={10}
+        keyboardVerticalOffset={20}
       >
         <TextInput
           placeholder="Type to add items..."
@@ -84,6 +119,7 @@ const getData = async () => {
           onChangeText={(text) => setInputText(text)}
           value = {inputText}
           autoCorrect={false}
+          onSubmitEditing={handlePress}
         />
         <TouchableOpacity style={[styles.icon, {backgroundColor : inputText.trim() ? "blue" : "#374151"}]} onPress={handlePress}>
           <Entypo name="plus" size={26} color="white" />
@@ -101,7 +137,7 @@ const styles = StyleSheet.create({
   },
   inputMain: {
     flexDirection: "row",
-    paddingHorizontal: 15,
+    paddingHorizontal: 18,
     alignItems: "center",
     gap: 5,
     marginBottom: 10,
