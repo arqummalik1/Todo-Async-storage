@@ -10,7 +10,7 @@ const Header = () => {
             <TouchableOpacity>
             <Entypo name="menu" size={24} color="#F9FAFB" />
             </TouchableOpacity>
-            <Text style={styles.title}>ToDo</Text>
+            <Text style={styles.title}>Tudu</Text>
             <TouchableOpacity>
             <FontAwesome5 name="user-circle" size={24} color="#F9FAFB" />
             </TouchableOpacity>

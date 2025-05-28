@@ -17,9 +17,12 @@ import SearchBar from "./components/searchBar";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
   const [inputText, setInputText] = useState("");
+  const [query,setQuery] = useState('');
+  const [searchItems,setSearchItems] = useState('')
 
   useEffect(() => {
     getData()
@@ -90,73 +93,98 @@ const updateChecked = async (id) => {
   catch(err){
     console.log(err)
   }
+};
+
+const handleSearch = (text) => {
+  setQuery(text);
+  if (!text.trim()) {
+    setSearchItems([])
+    return;
+  }
+  const items = data.filter((item)=> item.title.toLowerCase().includes(text.toLowerCase()));
+  setSearchItems(items);
 }
 
 
 
-  return (
+
+return (
+  <LinearGradient
+   colors={["#1E3A8A", "#6366F1", "#1E3A8A"]}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 1 }}
+    style={styles.gradient}
+  >
     <SafeAreaView style={styles.container}>
       <Header />
-      <SearchBar />
+      <SearchBar  value={query} onSubmit = {handleSearch}/>
       <FlatList
-        data={data}
-        renderItem={({ item }) => 
-        <Item data={item} 
-        delProp = {deleteItem} 
-        update = {updateChecked}
-        />}
+        data={query ? searchItems : data}
+        renderItem={({ item }) => (
+          <Item data={item} delProp={deleteItem} update={updateChecked} />
+        )}
         keyExtractor={(item) => item.id.toString()}
       />
       <KeyboardAvoidingView
         style={styles.inputMain}
-        behavior="padding"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={20}
       >
         <TextInput
           placeholder="Type to add items..."
-          placeholderTextColor="#888"
+          placeholderTextColor='rgba(255, 255, 255, 0.54)'
           style={styles.input}
           onChangeText={(text) => setInputText(text)}
-          value = {inputText}
+          value={inputText}
           autoCorrect={false}
           onSubmitEditing={handlePress}
         />
-        <TouchableOpacity style={[styles.icon, {backgroundColor : inputText.trim() ? "blue" : "#374151"}]} onPress={handlePress}>
-          <Entypo name="plus" size={26} color="white" />
+        <TouchableOpacity
+          style={[
+            styles.icon,
+            { backgroundColor: inputText.trim() ? "rgba(66, 239, 27, 0.89)" : "#3247" },
+          ]}
+          onPress={handlePress}
+        >
+          <Entypo name="plus" size={inputText ?  28 : 25} color="white" />
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  </LinearGradient>
+);
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#1F2937",
-   
+    backgroundColor: "transparent",
   },
   inputMain: {
     flexDirection: "row",
-    paddingHorizontal: 18,
+    paddingHorizontal: 15,
     alignItems: "center",
     gap: 5,
     marginBottom: 10,
-    
   },
   input: {
     flex: 1,
-    backgroundColor: "",
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     fontSize: 16,
-    borderRadius: 10,
-    color: "#fff",
-    padding: 10,
-    borderBottomWidth:0.9,
-    borderColor:"#374151"
+    borderRadius: 25,
+    color: "#F9FAFB",
+    padding: 15,
+    marginTop:10,
+//borderBottomWidth: 0.9,
+    //borderColor: "#6B7280",
   },
   icon: {
-    backgroundColor: "blue",
-    padding: 8,
-    borderRadius: 10,
+    padding: 12,
+    borderRadius: 50,
     marginLeft: 5,
+    alignSelf:"flex-end"
+
   },
 });
